@@ -20,7 +20,7 @@
         "test": "jest --detectOpenHandles",
         "lint": "tslint -c ./tslint.json -p tsconfig.json",
         "clean": "rimraf dist",
-        "publish": "npm run-script lint && npm run-script build && npm publish --access public"
+        "deploy": "npm run-script lint && npm run-script build && npm publish --access public"
     },
     "jest": {
         "globals": {
