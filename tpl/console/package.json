@@ -1,0 +1,43 @@
+{
+    "name": "generated",
+    "version": "1.0.0",
+    "main": "./dist/main.js",
+    "license": "UNLICENSED",
+    "description": "Generated project",
+    "scripts": {
+        "build": "npm run-script clean && tsc -p ./tsconfig.build.json",
+        "test": "jest --detectOpenHandles",
+        "lint": "tslint -c ./tslint.json -p tsconfig.json",
+        "clean": "rimraf dist",
+        "deploy": "npm run-script lint && npm run-script build && npm publish --access public"
+    },
+    "jest": {
+        "globals": {
+            "tsConfigFile": "tsconfig.json"
+        },
+        "moduleFileExtensions": [
+            "ts",
+            "js"
+        ],
+        "transform": {
+            "^.+\\.(ts)$": "./node_modules/ts-jest/preprocessor.js"
+        },
+        "testMatch": [
+            "**/test/**/*.test.(ts)"
+        ],
+        "testEnvironment": "node"
+    },
+    "devDependencies": {
+        "@types/jest": "^24.0.6",
+        "@types/node": "^11.9.5",
+        "jest": "^24.1.0",
+        "rimraf": "^2.6.3",
+        "ts-jest": "^24.0.0",
+        "ts-node": "^8.0.2",
+        "tslint": "^5.12.1",
+        "typescript": "^3.3.1"
+    },
+    "dependencies": {
+        "@msiviero/knit": "^1.0.1"
+    }
+}
