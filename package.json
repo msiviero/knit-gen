@@ -1,8 +1,9 @@
 {
     "name": "@msiviero/knit-gen",
     "version": "1.0.0",
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts",
+    "bin": {
+        "knit-gen": "./dist/main.js"
+    },
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -38,6 +39,7 @@
         "testEnvironment": "node"
     },
     "devDependencies": {
+        "@types/inquirer": "0.0.43",
         "@types/jest": "^24.0.6",
         "@types/node": "^11.9.5",
         "jest": "^24.1.0",
@@ -47,5 +49,7 @@
         "tslint": "^5.12.1",
         "typescript": "^3.3.1"
     },
-    "dependencies": {}
+    "dependencies": {
+        "inquirer": "^6.2.2"
+    }
 }
