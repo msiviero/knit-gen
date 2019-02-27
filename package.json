@@ -1,6 +1,6 @@
 {
   "name": "@msiviero/knit-gen",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "bin": {
     "knit-gen": "./dist/main.js"
   },
