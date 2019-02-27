@@ -7,7 +7,7 @@ interface ProjectAnswers {
   name: string;
 }
 
-export const runner2 = async () => {
+export const runner = async () => {
   const answers = await inquirer
     .prompt<ProjectAnswers>([{
       name: "template",
@@ -24,7 +24,5 @@ export const runner2 = async () => {
     }]);
   await generateTarget(answers.name, answers.template);
 };
-
-const runner = () => generateTarget("blabla", "console");
 
 runner();
