@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as inquirer from "inquirer";
-import { availableTemplates, generateTarget } from "./service/template";
+import { availableTemplates, generateTarget } from "./template";
 
 interface ProjectAnswers {
   template: string;

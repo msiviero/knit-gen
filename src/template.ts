@@ -4,7 +4,7 @@ import * as glob from "glob";
 import * as mkdirp from "mkdirp";
 import * as path from "path";
 
-const tplDirectory = path.resolve(__dirname + "/../../tpl");
+const tplDirectory = path.resolve(__dirname + "/../tpl");
 
 const templateSettings: dot.TemplateSettings = {
   evaluate: /\{\{([\s\S]+?(\}?)+)\}\}/g,
@@ -94,7 +94,8 @@ export const generateTarget = async (projectName: string, selectedTemplate: stri
       }
       const content = await fileContent(fileMeta.path);
       const targetFilePath = computeTargetFileRelativePath(fileMeta.path, selectedTemplate)
-        .replace(/\.dot\.jst$/, "");
+        .replace(/\.dot\.jst$/, "")
+        .replace(/^\_./, ".");
       let text = content;
 
       if (fileMeta.type === "tpl") {

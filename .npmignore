@@ -7,4 +7,6 @@ jest.config.js
 yarn.lock
 package-lock.json
 node_modules
-!/tpl
+.editorconfig
+.vscode
+!/tpl/**/*
