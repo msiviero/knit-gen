@@ -1,20 +1,9 @@
 {
-    "name": "@msiviero/knit-gen",
+    "name": "{{=it.templateName}}",
     "version": "1.0.0",
-    "bin": {
-        "knit-gen": "./dist/main.js"
-    },
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/msiviero/knit-gen"
-    },
-    "keywords": [
-        "nodejs",
-        "project generator",
-        "typescript"
-    ],
-    "description": "Knit library project generator",
+    "main": "./dist/main.js",
+    "license": "UNLICENSED",
+    "description": "Generated project - {{=it.templateName}}",
     "scripts": {
         "build": "npm run-script clean && tsc -p ./tsconfig.build.json",
         "test": "jest --detectOpenHandles",
@@ -39,11 +28,7 @@
         "testEnvironment": "node"
     },
     "devDependencies": {
-        "@types/dot": "^1.1.3",
-        "@types/glob": "^7.1.1",
-        "@types/inquirer": "0.0.43",
         "@types/jest": "^24.0.6",
-        "@types/mkdirp": "^0.5.2",
         "@types/node": "^11.9.5",
         "jest": "^24.1.0",
         "rimraf": "^2.6.3",
@@ -53,9 +38,6 @@
         "typescript": "^3.3.1"
     },
     "dependencies": {
-        "dot": "^1.1.2",
-        "glob": "^7.1.3",
-        "inquirer": "^6.2.2",
-        "mkdirp": "^0.5.1"
+        "@msiviero/knit": "^1.0.1"
     }
 }

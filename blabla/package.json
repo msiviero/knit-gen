@@ -1,9 +1,9 @@
 {
-    "name": "generated",
+    "name": "blabla",
     "version": "1.0.0",
     "main": "./dist/main.js",
     "license": "UNLICENSED",
-    "description": "Generated project",
+    "description": "Generated project - blabla",
     "scripts": {
         "build": "npm run-script clean && tsc -p ./tsconfig.build.json",
         "test": "jest --detectOpenHandles",
