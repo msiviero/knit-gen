@@ -13,7 +13,7 @@ export const runner = async () => {
     .prompt<ProjectAnswers>([{
       name: "template",
       type: "list",
-      message: "What type of app would you like to generate?",
+      message: "What type of project would you like to generate?",
       choices: await availableTemplates(),
     }, {
       name: "name",
