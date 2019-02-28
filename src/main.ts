@@ -8,6 +8,7 @@ interface ProjectAnswers {
 }
 
 export const runner = async () => {
+  console.log();
   const answers = await inquirer
     .prompt<ProjectAnswers>([{
       name: "template",
@@ -22,7 +23,9 @@ export const runner = async () => {
         ? true
         : "Project name may only include letters, numbers, underscores and hashes.",
     }]);
+  console.log();
   await generateTarget(answers.name, answers.template);
+  console.log();
 };
 
 runner();

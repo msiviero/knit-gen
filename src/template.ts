@@ -1,8 +1,21 @@
+import chalk from "chalk";
 import * as dot from "dot";
-import { promises as fs } from "fs";
+import * as fs from "fs";
 import * as glob from "glob";
 import * as mkdirp from "mkdirp";
 import * as path from "path";
+import { promisify } from "util";
+
+const asyncStat = promisify(fs.stat);
+const asyncWriteFile = promisify(fs.writeFile);
+const asyncReadFile = promisify(fs.readFile);
+const asyncReaddir = promisify(fs.readdir);
+const asyncMkdir = promisify(fs.mkdir);
+
+const higlight = chalk.greenBright;
+const info = (msg: string) => console.log(`- ${msg}`);
+const warn = (msg: string) => console.log(`${chalk.yellow("WARN")}: ${msg}`);
+const err = (msg: string) => console.log(`${chalk.red("ERROR")}: ${msg}`);
 
 const tplDirectory = path.resolve(__dirname + "/../tpl");
 
@@ -28,7 +41,7 @@ export interface TemplateFile {
 }
 
 export const directoryExists = (filePath: string) => new Promise<boolean>((resolve) => {
-  fs.stat(filePath)
+  asyncStat(filePath)
     .then((stat) => resolve(stat.isDirectory()))
     .catch(() => resolve(false));
 });
@@ -42,15 +55,13 @@ export const dumpFile = (filePath: string, content: Buffer) => new Promise<void>
     if (error) {
       return reject(error);
     }
-    fs.writeFile(filePath, content)
-      .then(() => resolve())
-      .catch(reject);
+    asyncWriteFile(filePath, content).then(() => resolve()).catch(reject);
   });
 });
 
-export const createDirectory = (filePath: string) => fs.mkdir(filePath);
-export const fileContent = (filePath: string) => fs.readFile(filePath, "utf8");
-export const availableTemplates = () => fs.readdir(tplDirectory);
+export const createDirectory = (filePath: string) => asyncMkdir(filePath);
+export const fileContent = (filePath: string) => asyncReadFile(filePath, "utf8");
+export const availableTemplates = () => asyncReaddir(tplDirectory);
 
 export const computeTargetFileRelativePath = (filePath: string, selectedTemplate: string) => {
   const fullPath = filePath.replace(new RegExp(`^(${tplDirectory}/${selectedTemplate}\.)`), "");
@@ -75,20 +86,23 @@ export const prepareTemplateCopy = (files: string[]): TemplateFile[] =>
   );
 
 export const generateTarget = async (projectName: string, selectedTemplate: string) => {
+  info(`Generating project ${higlight(projectName)} using template ${higlight(selectedTemplate)}`);
+
   const targetDirectory = `${process.cwd()}/${projectName}`;
 
   if (await directoryExists(targetDirectory)) {
-    console.warn("Directory already exists");
+    warn("Directory already exists");
     return;
   }
 
+  info("Generating project directory");
   await createDirectory(targetDirectory);
 
   const tplFiles = await scanTemplateFiles(selectedTemplate);
   const filesMeta = prepareTemplateCopy(tplFiles);
   const operations = filesMeta.map(async (fileMeta) => {
     try {
-      const stat = await fs.stat(fileMeta.path);
+      const stat = await asyncStat(fileMeta.path);
       if (stat.isDirectory()) {
         return;
       }
@@ -104,10 +118,10 @@ export const generateTarget = async (projectName: string, selectedTemplate: stri
       }
       return await dumpFile(`${targetDirectory}/${targetFilePath}`, Buffer.from(text));
     } catch (e) {
-      console.error("Single error on " + JSON.stringify(fileMeta));
-      console.error(e);
+      err(e);
     }
   });
 
   await Promise.all(operations);
+  info(`Done! Don't forget to run ${higlight("npm install")} inside your new project directory`);
 };
