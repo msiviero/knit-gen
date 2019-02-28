@@ -1,8 +1,7 @@
+import { Container, HttpServer, Scope } from "@msiviero/knit";
+import * as supertest from "supertest";
 import { Hello } from "../src/api/hello";
-import { Container, Scope, HttpServer } from "@msiviero/knit";
 import { Service } from "../src/service/service";
-import supertest = require("supertest");
-
 
 describe("Http server custom instance", () => {
 

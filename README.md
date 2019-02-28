@@ -3,7 +3,7 @@
 ## install
 
 ```shell
-npm i -g knit-get
+npm i -g @msiviero/knit-get
 ```
 ## usage
 
