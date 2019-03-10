@@ -9,7 +9,7 @@ class Application {
     HttpServer
       .getInstance()
       .api(Hello)
-      .start(this.getPort());
+      .start({ port: this.getPort() });
   }
 
   private getPort() {

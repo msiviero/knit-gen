@@ -12,12 +12,12 @@ describe("Http server custom instance", () => {
   const httpServer = new HttpServer(container)
     .api(Hello);
 
-  beforeAll(() => httpServer.start(0));
+  beforeAll(() => httpServer.start({ port: 0 }));
   afterAll(() => httpServer.stop());
 
   it("should register endpoint and serve requests", async () => {
 
-    const response = await supertest(httpServer.app.server)
+    const response = await supertest(httpServer.getServer())
       .get("/hello")
       .expect(200)
       .expect("Content-Type", "application/json; charset=utf-8");
