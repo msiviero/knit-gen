@@ -3,11 +3,11 @@
 ## install
 
 ```shell
-npm i -g @msiviero/knit-get
+npm i -g @msiviero/knit-gen
 ```
 ## usage
 
 ```shell
-npm i -g knit-get
+knit-gen
 ```
 And then follow the prompt
