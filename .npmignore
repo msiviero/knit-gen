@@ -3,10 +3,5 @@ test
 types
 tsconfig.*
 tslint.*
-jest.config.js
 yarn.lock
 package-lock.json
-node_modules
-.editorconfig
-.vscode
-!/tpl/**/*
