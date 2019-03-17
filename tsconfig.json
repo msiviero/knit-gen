@@ -29,8 +29,5 @@
         "allowSyntheticDefaultImports": false,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
-    },
-    "exclude": [
-        "tpl"
-    ],
+    }
 }

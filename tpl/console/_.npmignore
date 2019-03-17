@@ -1,7 +1,0 @@
-src
-test
-types
-tsconfig.*
-tslint.*
-yarn.lock
-package-lock.json
