@@ -17,13 +17,12 @@ export class GitClient {
     @env("GIT_USER", "msiviero") private readonly gitUser: string,
     @env("GIT_TPL_PREFIX", "knit-tpl") private readonly gitTplPrefix: string,
     @env("GIT_HTTP_USER_AGENT", "knit-tpl") private readonly gitHttpUserAgent: string,
-    @env("GIT_ACCESS_TOKEN", "b2d4934784aed948221045b07b00ffa7db93ae8d") private readonly gitAccessToken: string,
   ) { }
 
   public fetchAvailableTemplates = (): Promise<string[]> => new Promise((resolve, reject) => {
     https.get({
       ...this.defaultHttpOpts,
-      path: `/users/${this.gitUser}/repos?access_token=${this.gitAccessToken}`,
+      path: `/users/${this.gitUser}/repos`,
     }, (response) => {
       const chunks: Buffer[] = [];
       response
@@ -45,11 +44,10 @@ export class GitClient {
     return new Promise<Buffer>((resolve, reject) => {
       this.log.info("Starting project template download");
       const chunks: Buffer[] = [];
-      const urlParams = url.parse(link);
 
       const httpOpts = {
         ...this.defaultHttpOpts,
-        ...{ ...urlParams, path: `${urlParams.path}?access_token=${this.gitAccessToken}` },
+        ...url.parse(link),
       };
 
       https
@@ -64,7 +62,7 @@ export class GitClient {
 
   private fetchZipballDownloadLink = (template: string) => new Promise<string>((resolve, reject) => https.get({
     hostname: "api.github.com",
-    path: `/repos/${this.gitUser}/knit-tpl-${template}/zipball?access_token=${this.gitAccessToken}`,
+    path: `/repos/${this.gitUser}/knit-tpl-${template}/zipball`,
     headers: { "User-Agent": "nodejs-client" },
   }, (response) => {
     if (response.statusCode === 302) {
