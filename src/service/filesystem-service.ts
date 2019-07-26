@@ -27,9 +27,9 @@ export class FilesystemService {
           return await this.makeDir(file);
         }
 
-        const compiled: CompiledFile = file.endsWith(".dot.jst")
+        const compiled: CompiledFile = file.endsWith(".jst")
           ? {
-            path: file.replace(/\.dot\.jst$/, ""),
+            path: file.replace(/\.jst$/, ""),
             content: this.templateService.compile(await zipInfo.async("nodebuffer"), {
               templateName: name,
             }),
