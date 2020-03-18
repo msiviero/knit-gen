@@ -39,25 +39,25 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@types/inquirer": "6.0.3",
-    "@types/jest": "^24.0.15",
-    "@types/jszip": "^3.1.6",
-    "@types/lodash": "^4.14.136",
-    "@types/mkdirp": "^0.5.2",
-    "@types/node": "^12.6.8",
-    "jest": "^24.8.0",
-    "rimraf": "^2.6.3",
-    "ts-jest": "^24.0.2",
-    "ts-node": "^8.3.0",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "@types/inquirer": "6.5.0",
+    "@types/jest": "^25.1.4",
+    "@types/jszip": "^3.1.7",
+    "@types/lodash": "^4.14.149",
+    "@types/mkdirp": "^1.0.0",
+    "@types/node": "^13.9.1",
+    "jest": "^25.1.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.2.1",
+    "ts-node": "^8.6.2",
+    "tslint": "^6.1.0",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@msiviero/knit": "^1.3.0",
-    "chalk": "^2.4.2",
-    "inquirer": "^6.5.0",
+    "@msiviero/knit": "^2.5.5",
+    "chalk": "^3.0.0",
+    "inquirer": "^7.1.0",
     "jszip": "^3.2.2",
     "lodash": "^4.17.15",
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^1.0.3"
   }
 }
