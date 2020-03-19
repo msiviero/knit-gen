@@ -29,12 +29,10 @@ export class GitClient {
       const chunks: Buffer[] = [];
       response
         .on("data", (chunk: Buffer) => chunks.push(chunk))
-        .on("end", () => {
-          const data: HasName[] = JSON.parse(Buffer.concat(chunks).toString());
-          resolve(data
-            .filter((repo) => repo.name.startsWith(this.gitTplPrefix))
-            .map((repo) => repo.name.replace(`${this.gitTplPrefix}-`, "")));
-        })
+        .on("end", () => resolve(
+          JSON.parse(Buffer.concat(chunks).toString())
+            .filter((repo: HasName) => repo.name.startsWith(this.gitTplPrefix))
+            .map((repo: HasName) => repo.name.replace(`${this.gitTplPrefix}-`, ""))))
         .on("error", reject);
     });
   })
