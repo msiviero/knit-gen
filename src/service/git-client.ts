@@ -4,6 +4,8 @@ import { RequestOptions } from "https";
 import * as url from "url";
 import { h, Logger } from "../logger";
 
+interface HasName { name: string }
+
 @injectable()
 export class GitClient {
 
@@ -28,7 +30,7 @@ export class GitClient {
       response
         .on("data", (chunk: Buffer) => chunks.push(chunk))
         .on("end", () => {
-          const data: Array<{ name: string }> = JSON.parse(Buffer.concat(chunks).toString());
+          const data: HasName[] = JSON.parse(Buffer.concat(chunks).toString());
           resolve(data
             .filter((repo) => repo.name.startsWith(this.gitTplPrefix))
             .map((repo) => repo.name.replace(`${this.gitTplPrefix}-`, "")));

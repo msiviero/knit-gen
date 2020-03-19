@@ -1,14 +1,8 @@
 import { injectable } from "@msiviero/knit";
 import * as fs from "fs";
-import * as Jszip from "jszip";
-import { JSZipObject } from "jszip";
+import { JSZipObject, loadAsync } from "jszip";
 import * as mkdirp from "mkdirp";
 import { TemplateService } from "./tpl-service";
-
-interface CompiledFile {
-  path: string;
-  content: Buffer;
-}
 
 @injectable()
 export class FilesystemService {
@@ -18,37 +12,47 @@ export class FilesystemService {
   ) { }
 
   public async uncompress(targetDir: string, name: string, bytes: Buffer) {
-    const zipfile = await Jszip.loadAsync(bytes);
+    const zipfile = await loadAsync(bytes);
     const archiveFiles = Object.entries(zipfile.files);
-    archiveFiles
+
+    const directoriesCreation = archiveFiles
       .map(this.normalizeFilePath(targetDir))
-      .forEach(async ([file, zipInfo]) => {
-        if (zipInfo.dir) {
-          return await this.makeDir(file);
+      .filter(([_, zipInfo]) => zipInfo.dir)
+      .map(([file]) => this.makeDir(file));
+
+    try {
+      await Promise.all(directoriesCreation);
+      console.log("Finished with directories");
+    } catch (e) {
+      console.error("Error while creating directories", e);
+    }
+
+    const dirFiles = archiveFiles
+      .map(this.normalizeFilePath(targetDir))
+      .filter(([_, zipInfo]) => !zipInfo.dir)
+      .map(([file, zipInfo]): [string, Promise<Buffer>] => [file, zipInfo.async("nodebuffer")])
+      .map(async ([file, buffer]) => file.endsWith(".jst")
+        ? {
+          path: file.replace(/\.jst$/, ""),
+          content: this.templateService.compile(await buffer, {
+            templateName: name,
+          }),
         }
-
-        const compiled: CompiledFile = file.endsWith(".jst")
-          ? {
-            path: file.replace(/\.jst$/, ""),
-            content: this.templateService.compile(await zipInfo.async("nodebuffer"), {
-              templateName: name,
-            }),
-          }
-          : {
-            path: file,
-            content: await zipInfo.async("nodebuffer"),
-          };
-
-        await new Promise((resolve, reject) => {
-          fs.writeFile(compiled.path, compiled.content, (err) => {
-            if (err) {
-              return reject(err);
-            }
-            resolve();
-          });
-        });
+        : {
+          path: file,
+          content: await buffer,
+        })
+      .map(async (compiled) => {
+        const file = await compiled;
+        return fs.promises.writeFile(file.path, file.content);
       });
 
+    try {
+      await Promise.all(dirFiles);
+      console.log("Finished with files");
+    } catch (e) {
+      console.error("Error while creating files", e);
+    }
     return archiveFiles.length;
   }
 
@@ -70,15 +74,12 @@ export class FilesystemService {
     }));
   }
 
-  private makeDir(path: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      mkdirp(path, (error) => {
-        if (error) {
-          return reject(error);
-        }
-        resolve();
-      });
-    });
+  private async makeDir(path: string) {
+    try {
+      await mkdirp(path);
+    } catch (e) {
+      console.error(`Error while creating dir [dir=${path}]`, e);
+    }
   }
 
   private normalizeFilePath = (path: string) =>

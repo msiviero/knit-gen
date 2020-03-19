@@ -1,9 +1,9 @@
 
 import { Container, injectable } from "@msiviero/knit";
-import * as inquirer from "inquirer";
 import { h, Logger } from "./logger";
+import { ProjectService, ProjectOptions } from "./service/project-service";
 import { GitClient } from "./service/git-client";
-import { ProjectOptions, ProjectService } from "./service/project-service";
+import * as inquirer from "inquirer";
 
 @injectable()
 class Application {

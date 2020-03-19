@@ -1,5 +1,6 @@
 import { injectable } from "@msiviero/knit";
-import chalk, { Chalk } from "chalk";
+import * as chalk from "chalk";
+import { Chalk } from "chalk";
 
 export type LogLevel = "INFO" | "WARN" | "ERROR";
 
